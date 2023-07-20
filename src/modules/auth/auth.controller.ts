@@ -1,25 +1,17 @@
 import { Controller, Body, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
-@Controller('auth')
+@Controller('login')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('signup')
+  @Post()
   async signUp(
     @Body('email') email: string,
     @Body('password') password: string,
   ) {
     const user = await this.authService.signUp(email, password);
-    return { message: 'User signed up successfully', user };
-  }
-
-  @Post('signin')
-  async signIn(
-    @Body('email') email: string,
-    @Body('password') password: string,
-  ) {
     const token = await this.authService.signIn(email, password);
-    return { message: 'User signed in successfully', token };
+    return { message: 'User signed in successfully', user, token };
   }
 }
